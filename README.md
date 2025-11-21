@@ -10,6 +10,7 @@ This guide provides instructions for deploying CrowdStrike Falcon components in 
 - CrowdStrike Customer ID (CID)
 - Azure subscription and AKS cluster
 - `kubectl`, `helm`, `az` CLI, and `jq` installed
+- Latest pull script 
 
 FalconNodeSensor CR Configuration using CrowdStrike API Keys
 Important
@@ -28,9 +29,9 @@ Set the following environment variables with your specific values:
 export FCSCLIENTID=<YOUR_CLIENT_ID>
 export FSCSECRET=<YOUR_CLIENT_SECRET>
 export FCSCID=<YOUR_CID>
-export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/<REGION>/release/falcon-sensor
-export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/<REGION>/release/falcon-imageanalyzer
-export KACREGISTRY=registry.crowdstrike.com/falcon-kac/<REGION>/release/falcon-kac
+export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/release/falcon-sensor
+export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/release/falcon-imageanalyzer
+export KACREGISTRY=registry.crowdstrike.com/falcon-kac/release/falcon-kac
 export AZURESUBSCRIPTION=<YOUR_AZURE_SUBSCRIPTION_ID>
 export CLUSTERRESOURCEGROUP=<YOUR_RESOURCE_GROUP>
 export CLUSTERNAME=<YOUR_CLUSTER_NAME>
@@ -40,7 +41,6 @@ Replace the placeholders with your actual values:
 - `<YOUR_CLIENT_ID>`: Your CrowdStrike API client ID
 - `<YOUR_CLIENT_SECRET>`: Your CrowdStrike API client secret
 - `<YOUR_CID>`: Your CrowdStrike customer ID
-- `<REGION>`: Your CrowdStrike region (e.g., us-1, eu-1)
 - `<YOUR_AZURE_SUBSCRIPTION_ID>`: Your Azure subscription ID
 - `<YOUR_RESOURCE_GROUP>`: The resource group containing your AKS cluster
 - `<YOUR_CLUSTER_NAME>`: The name of your AKS cluster
