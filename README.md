@@ -103,7 +103,7 @@ Deploy the CrowdStrike Image Analyzer:
 # Get the latest IAR tag and pull token
 unset PULLTOKEN
 export IAR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer --list-tags)
-export LATEST_IAR_TAG=$(echo "$IAR" | jq -r '.tags | sort | last')
+export LATEST_IAR_TAG=$(echo "$IAR" | jq -r '.tags | .[-1]')
 export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer  --get-pull-token)
 
 # Deploy using Helm
