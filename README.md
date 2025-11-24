@@ -55,6 +55,7 @@ curl -sSL -o falcon-container-sensor-pull.sh https://github.com/CrowdStrike/falc
 chmod 777 ./falcon-container-sensor-pull.sh
 
 # Get the latest sensor tag and pull token
+unset PULLTOKEN
 export SENSOR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --list-tags)
 export LATEST_SENSOR_TAG=$(echo "$SENSOR" | jq -r '.tags | sort | last')
 export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --get-pull-token)
@@ -80,6 +81,8 @@ Deploy the CrowdStrike Kubernetes Admission Controller:
 
 ```bash
 # Get the latest KAC tag
+unset PULLTOKEN
+export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-kac --get-pull-token)
 export KAC=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-kac --list-tags)
 export LATEST_KAC_TAG=$(echo "$KAC" | jq -r '.tags | sort | last')
 
@@ -98,9 +101,10 @@ Deploy the CrowdStrike Image Analyzer:
 
 ```bash
 # Get the latest IAR tag and pull token
+unset PULLTOKEN
+export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-iar --get-pull-token)
 export IAR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer --list-tags)
 export LATEST_IAR_TAG=$(echo "$IAR" | jq -r '.tags | sort | last')
-export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer --get-pull-token)
 
 # Deploy using Helm
 helm upgrade --install iar crowdstrike/falcon-image-analyzer -n falcon-image-analyzer --create-namespace \
