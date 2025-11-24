@@ -104,7 +104,7 @@ Deploy the CrowdStrike Image Analyzer:
 unset PULLTOKEN
 export IAR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer --list-tags)
 export LATEST_IAR_TAG=$(echo "$IAR" | jq -r '.tags | sort | last')
-export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-iar --get-pull-token)
+export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer  --get-pull-token)
 
 # Deploy using Helm
 helm upgrade --install iar crowdstrike/falcon-image-analyzer -n falcon-image-analyzer --create-namespace \
