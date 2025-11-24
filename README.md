@@ -29,9 +29,9 @@ Set the following environment variables with your specific values:
 export FCSCLIENTID=<YOUR_CLIENT_ID>
 export FSCSECRET=<YOUR_CLIENT_SECRET>
 export FCSCID=<YOUR_CID>
-export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/release/falcon-sensor
-export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/release/falcon-imageanalyzer
-export KACREGISTRY=registry.crowdstrike.com/falcon-kac/release/falcon-kac
+export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/us-1/release/falcon-sensor
+export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/us-1/release/falcon-imageanalyzer
+export KACREGISTRY=registry.crowdstrike.com/falcon-kac/us-1/release/falcon-kac
 export AZURESUBSCRIPTION=<YOUR_AZURE_SUBSCRIPTION_ID>
 export CLUSTERRESOURCEGROUP=<YOUR_RESOURCE_GROUP>
 export CLUSTERNAME=<YOUR_CLUSTER_NAME>
