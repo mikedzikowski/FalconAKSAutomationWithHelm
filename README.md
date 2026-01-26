@@ -29,7 +29,7 @@ Set the following environment variables with your specific values:
 export FCSCLIENTID=<YOUR_CLIENT_ID>
 export FSCSECRET=<YOUR_CLIENT_SECRET>
 export FCSCID=<YOUR_CID>
-export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/us-1/release/falcon-sensor
+export SENSORREGISTRY=registry.crowdstrike.com/falcon-sensor/release/falcon-sensor
 export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/us-1/release/falcon-imageanalyzer
 export KACREGISTRY=registry.crowdstrike.com/falcon-kac/us-1/release/falcon-kac
 export AZURESUBSCRIPTION=<YOUR_AZURE_SUBSCRIPTION_ID>
@@ -57,7 +57,7 @@ chmod 777 ./falcon-container-sensor-pull.sh
 # Get the latest sensor tag and pull token
 unset PULLTOKEN
 export SENSOR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --list-tags)
-export LATEST_SENSOR_TAG=$(echo "$SENSOR" | jq -r '.tags | sort | last')
+export LATEST_SENSOR_TAG=$(echo "$SENSOR" | jq -r '.tags | sort_by(split("-")[0] | split(".") | map(tonumber)) | last')
 export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --get-pull-token)
 
 # Connect to your AKS cluster
