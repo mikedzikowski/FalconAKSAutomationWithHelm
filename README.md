@@ -55,24 +55,20 @@ curl -sSL -o falcon-container-sensor-pull.sh https://github.com/CrowdStrike/falc
 chmod 777 ./falcon-container-sensor-pull.sh
 
 # Get the latest sensor tag and pull token
-unset PULLTOKEN
-export SENSOR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --list-tags)
+unset PULL_TOKEN
+export SENSOR=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-sensor --list-tags)
 export LATEST_SENSOR_TAG=$(echo "$SENSOR" | jq -r '.tags | sort_by(split("-")[0] | split(".") | map(tonumber)) | last')
-export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-sensor --get-pull-token)
-
-# Connect to your AKS cluster
-az account set --subscription $AZURESUBSCRIPTION
-az aks get-credentials --resource-group $CLUSTERRESOURCEGROUP --name $CLUSTERNAME --overwrite-existing
+export PULL_TOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-sensor --get-pull-token)
 
 # Deploy using Helm
 helm repo add crowdstrike https://crowdstrike.github.io/falcon-helm
 helm repo update
 helm upgrade --install falcon-helm crowdstrike/falcon-sensor \
   -n falcon-system --create-namespace \
-  --set falcon.cid=$FCSCID \
-  --set node.image.repository=$SENSORREGISTRY \
+  --set falcon.cid=$FCS_CID \
+  --set node.image.repository=$SENSOR_REGISTRY \
   --set node.image.tag=$LATEST_SENSOR_TAG \
-  --set node.image.registryConfigJSON=$PULLTOKEN
+  --set node.image.registryConfigJSON=$PULL_TOKEN
 ```
 
 ## 2. Kubernetes Admission Controller (KAC) Deployment
@@ -81,18 +77,18 @@ Deploy the CrowdStrike Kubernetes Admission Controller:
 
 ```bash
 # Get the latest KAC tag
-unset PULLTOKEN
-export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-kac --get-pull-token)
-export KAC=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-kac --list-tags)
+unset PULL_TOKEN
+export PULL_TOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-kac --get-pull-token)
+export KAC=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-kac --list-tags)
 export LATEST_KAC_TAG=$(echo "$KAC" | jq -r '.tags | sort | last')
 
 # Deploy using Helm
 helm install falcon-kac crowdstrike/falcon-kac \
   -n falcon-kac --create-namespace \
-  --set falcon.cid=$FCSCID \
-  --set image.repository=$KACREGISTRY \
+  --set falcon.cid=$FCS_CID \
+  --set image.repository=$KAC_REGISTRY \
   --set image.tag=$LATEST_KAC_TAG \
-  --set image.registryConfigJSON=$PULLTOKEN
+  --set image.registryConfigJSON=$PULL_TOKEN
 ```
 
 ## 3. Image Analyzer (IAR) Deployment
@@ -101,22 +97,22 @@ Deploy the CrowdStrike Image Analyzer:
 
 ```bash
 # Get the latest IAR tag and pull token
-unset PULLTOKEN
-export IAR=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer --list-tags)
+unset PULL_TOKEN
+export IAR=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-imageanalyzer --list-tags)
 export LATEST_IAR_TAG=$(echo "$IAR" | jq -r '.tags | .[-1]')
-export PULLTOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCSCLIENTID -s $FSCSECRET --type falcon-imageanalyzer  --get-pull-token)
+export PULL_TOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FCS_CLIENT_ID -s $FCS_SECRET --type falcon-imageanalyzer  --get-pull-token)
 
 # Deploy using Helm
 helm upgrade --install iar crowdstrike/falcon-image-analyzer -n falcon-image-analyzer --create-namespace \
-  --set deployment.enabled=true \
-  --set crowdstrikeConfig.clusterName=$CLUSTERNAME \
-  --set crowdstrikeConfig.clientID=$FCSCLIENTID \
-  --set crowdstrikeConfig.clientSecret=$FSCSECRET \
-  --set crowdstrikeConfig.agentRegion=us-1 \
-  --set image.registryConfigJSON=$PULLTOKEN \
-  --set image.repository=$IARREGISTRY \
-  --set image.tag=$LATEST_IAR_TAG \
-  --set crowdstrikeConfig.cid=$FCSCID
+  --set deployment.enabled=true \
+  --set crowdstrikeConfig.clusterName=$CLUSTER_NAME \
+  --set crowdstrikeConfig.clientID=$FCS_CLIENT_ID \
+  --set crowdstrikeConfig.clientSecret=$FCS_SECRET \
+  --set crowdstrikeConfig.agentRegion=us-1 \
+  --set image.registryConfigJSON=$PULL_TOKEN \
+  --set image.repository=$IAR_REGISTRY \
+  --set image.tag=$LATEST_IAR_TAG \
+  --set crowdstrikeConfig.cid=$FCS_CID
 ```
 
 ## Verification
