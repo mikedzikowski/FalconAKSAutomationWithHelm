@@ -31,7 +31,6 @@ export FALCON_CLIENT_SECRET=<YOUR_CLIENT_SECRET>
 export FALCON_CID=<YOUR_CID>
 export SENSOR_REGISTRY=registry.crowdstrike.com/falcon-sensor/release/falcon-sensor
 export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/release/falcon-imageanalyzer
-export KACREGISTRY=registry.crowdstrike.com/falcon-kac/release/falcon-kac
 export IARREGISTRY=registry.crowdstrike.com/falcon-imageanalyzer/us-1/release/falcon-imageanalyzer
 export KACREGISTRY=registry.crowdstrike.com/falcon-kac/us-1/release/falcon-kac
 export AZURESUBSCRIPTION=<YOUR_AZURE_SUBSCRIPTION_ID>
