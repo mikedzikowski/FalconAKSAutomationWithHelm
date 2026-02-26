@@ -58,6 +58,7 @@ chmod 777 ./falcon-container-sensor-pull.sh
 # Get the latest sensor tag and pull token
 unset PULL_TOKEN
 # Get sensor tags
+export PULL_TOKEN=$(bash ./falcon-container-sensor-pull.sh -u $FALCON_CLIENT_ID -s $FALCON_CLIENT_SECRET -t falcon-kac --get-pull-token)
 export SENSOR=$(bash ./falcon-container-sensor-pull.sh -u $FALCON_CLIENT_ID -s $FALCON_CLIENT_SECRET -t falcon-sensor --list-tags)
 export LATEST_SENSOR_TAG=$(echo "$SENSOR" | jq -r '.tags | sort_by(split("-")[0] | split(".") | map(tonumber)) | last')
 
